@@ -1,0 +1,57 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-menu-button></ion-menu-button>
+      </ion-buttons>
+      <ion-title>Home</ion-title>
+    </ion-toolbar>
+  </ion-header>
+<ion-content class="ion-padding">
+    <!-- Header -->
+    <div class="header">
+      <div class="welcome-text">
+        <h1>Welcome Back</h1>
+        <p>{{userName}}</p>
+      </div>
+      <ion-searchbar placeholder="Search" class="custom-searchbar"></ion-searchbar>
+    </div>
+  
+    <!-- Room Grid -->
+    <div class="section-title">
+      <h2>Menu</h2>
+      <span>Services</span>
+    </div>
+  
+    <div class="room-grid">
+      <ion-card *ngFor="let room of rooms" class="room-card" (click)="navigateTo(room)">
+        <ion-card-content>
+          <div class="icon-container">
+            <ion-icon [name]="room.icon"></ion-icon>
+          </div>
+          <div class="room-info">
+            <h3>{{room.name}}</h3>
+            <p>{{room.devices}}</p>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+      <ion-button fill="clear">
+        <ion-icon name="home"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear">
+        <ion-icon name="mail"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" class="add-button">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear">
+        <ion-icon name="calendar"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear">
+        <ion-icon name="person"></ion-icon>
+      </ion-button>
+    </div>
+  </ion-content> 

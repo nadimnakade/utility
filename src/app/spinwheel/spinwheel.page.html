@@ -1,0 +1,91 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Spin & Win</ion-title>
+    </ion-toolbar>  
+</ion-header>
+
+<ion-content>
+  <div class="wheel-container">
+    <div class="spins-indicator">
+      <ion-chip color="primary">
+        <ion-label>Spins Remaining: {{ spinsRemaining }}</ion-label>
+      </ion-chip>
+    </div>
+
+    <!-- <div class="celebration" *ngIf="showCelebration">
+      <div *ngFor="let i of [].constructor(50); let idx = index" class="confetti"></div>
+      <div class="prize-popup">
+        <div class="congrats">🎉 Congratulations! 🎉</div>
+        <div class="amount">₹{{winningAmount}}</div>
+        <div>You've Won!</div>
+      </div>
+    </div> -->
+
+    <!-- <div *ngIf="showCelebration" class="celebration-message">
+      <div class="congrats">🎉 Congratulations! 🎉</div>
+      <div>You've Won!</div>  
+      <div class="amount">₹{{winningAmount}}</div>
+        
+    </div> -->
+
+    <!-- Replace the celebration div with this -->
+    <div class="celebration" *ngIf="showCelebration">
+      <div *ngFor="let i of [].constructor(50); let idx = index" class="confetti"></div>
+      <div class="prize-popup">
+        <div class="congrats">🎉 Congratulations! 🎉</div>
+        <div class="amount">₹{{winningAmount}}</div>
+        <div>You've Won!</div>
+      </div>
+    </div>
+<!-- <div class="celebration" *ngIf="showCelebration">
+  <div class="prize-popup">
+    <div class="congrats">Congratulations!</div>
+    <div class="amount">₹{{winningAmount}}</div>
+    <div>You've Won!</div>
+  </div>
+</div> -->
+
+
+    <div class="wheel-wrapper" *ngIf="!isLoading && items.length">
+      <div class="pointer">
+        <div class="pointer-triangle"></div>
+      </div>
+      <ngx-wheel
+        #wheel
+        width='350'
+        height='350'
+        spinDuration='5'
+        [items]='items'
+        [innerRadius]='50'
+        [spinAmount]='10'
+        [textOrientation]='textOrientation'
+        [textAlignment]='textAlignment'
+        pointerStrokeColor='transparent'
+        pointerFillColor='transparent'
+        [idToLandOn]='idToLandOn'
+        (onSpinStart)='before()'
+        (onSpinComplete)='after()'
+        rotateWheelOnClick='false'
+        borderColor='#2196f3'
+        borderWidth='5'
+      ></ngx-wheel>
+    </div>
+
+    <ion-button 
+      expand="block" 
+      class="spin-button" 
+      (click)="spin()">
+      Spin
+    </ion-button>
+    <!-- [disabled]="wheel?.spinning || spinsRemaining <= 0">
+      <ng-container *ngIf="!wheel?.spinning">
+        {{ spinsRemaining > 0 ? 'SPIN NOW!' : 'NO SPINS LEFT' }}
+      </ng-container>
+      <ng-container *ngIf="wheel?.spinning">
+        Spinning...
+      </ng-container> -->
+  </div>
+</ion-content>

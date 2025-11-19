@@ -1,0 +1,25 @@
+<ion-app>
+  <ion-menu side="start" menuId="first" contentId="content1">
+    <ion-header>
+      <ion-toolbar color="primary">
+        <ion-title>Utilities v.{{AppVersion}}</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-menu-toggle auto-hide="true" *ngFor="let p of navigate">
+          <ion-item [routerLink]="p.url" routerDirection="root" routerLinkActive="active">
+            <ion-icon [name]="p.icon" slot="start"></ion-icon>
+            {{p.title}}
+          </ion-item>
+        </ion-menu-toggle>
+        <ion-item lines="none">
+          <ion-icon name="moon" slot="start"></ion-icon>
+          <ion-label>Dark Mode</ion-label>
+          <ion-toggle [checked]="isDarkMode" (ionChange)="setDarkMode($event.detail.checked)"></ion-toggle>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+  <ion-router-outlet id="content1"></ion-router-outlet>
+</ion-app>

@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Offer</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="dark-dashboard">
+  <ion-card class="glass-card">
+    <ion-card-header>
+    </ion-card-header>
+    <ion-card-content>
+      <div [innerHTML]="htmlStr"></div>
+    </ion-card-content>
+    <!-- <ion-grid style="display:none">
+      <ion-row>
+        <ion-col>
+          <button ion-button icon-only (click)="regularShare(i)" color="primary" clear>
+            <ion-icon class="share-icon" name="share"></ion-icon>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button icon-only (click)="whatsappShare(i)" color="primary" clear>
+            <ion-icon class="share-icon" name="logo-whatsapp"></ion-icon>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button icon-only (click)="facebookShare(i)" color="primary" clear>
+            <ion-icon class="share-icon" name="logo-facebook"></ion-icon>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button icon-only (click)="twitterShare(i)" color="primary" clear>
+            <ion-icon class="share-icon" name="logo-twitter"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid> -->
+  </ion-card>
+</ion-content>

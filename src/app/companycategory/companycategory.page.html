@@ -1,0 +1,34 @@
+<ion-header>  
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Company Category</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="dark-dashboard">
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-card class="glass-card">
+          <ion-card-header>
+            <ion-card-title>Company Category</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <table #dataTable class="display" id="dataTable" style="width:100%">
+              <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Bank</th>
+                    <th>Product</th>
+                  </tr>
+              </thead>
+            </table>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
