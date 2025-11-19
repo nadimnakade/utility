@@ -25,7 +25,7 @@ export class CompanycategoryPage implements OnInit {
       "processing": true,
       "serverSide": true,
       "info": true,
-      "stateSave": true,
+      "stateSave": false,
       "bDestroy": true,
       "lengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]],
       sAjaxSource: "https://1up.co.in/1up_api/CompanyCategory.ashx",

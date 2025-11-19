@@ -15,7 +15,7 @@ export class SpinwheelPage implements OnInit {
 
   items: any[] = [];
   showCelebration = false;
-  textOrientation: TextOrientation = TextOrientation.VERTICAL;
+  textOrientation: TextOrientation = TextOrientation.HORIZONTAL;
   textAlignment: TextAlignment = TextAlignment.OUTER;
   idToLandOn: number = 0;
   winningAmount: string = '';
@@ -38,12 +38,12 @@ export class SpinwheelPage implements OnInit {
         console.log('Backend prizes:', prizes);
 
         // Map backend data to the format required by ngx-wheel
-        this.items = prizes.map(prize => ({
+        this.items = prizes.filter(p => p.IsActive === true).map(prize => ({
           id: prize.id,
-          text: prize.description,
+          text: this.formatLabel(prize.description),
           fillStyle: prize.fillStyle || '#FF6384',
           textFillStyle: prize.textColor || '#ffffff',
-          textFontSize: prize.textFontSize || '13',
+          textFontSize: prize.textFontSize || '9',
           textFontWeight: prize.textFontWeight || 'bold',
           chance: prize.chance || 0
         }));
@@ -87,12 +87,12 @@ export class SpinwheelPage implements OnInit {
     }
     // Get prizes and probabilities from the backend
     await this.spinwheelService.getPrizes().subscribe(prizes => {
-      this.items = prizes.map((prize: any) => ({
+      this.items = prizes.filter((p: any) => p.IsActive === true).map((prize: any) => ({
         id: prize.id,
-        text: prize.description,
+        text: this.formatLabel(prize.description),
         fillStyle: prize.fillStyle || '#FF6384',
         textFillStyle: prize.textColor || '#ffffff',
-        textFontSize: prize.textFontSize || '13',
+        textFontSize: prize.textFontSize || '9',
         textFontWeight: prize.textFontWeight || 'bold',
         chance: prize.chance || 0,
       }));
@@ -139,6 +139,17 @@ export class SpinwheelPage implements OnInit {
     //   });
   }
 
+  private formatLabel(text: string): string {
+    if (!text) return '';
+    const upper = text.toUpperCase().trim();
+    if (upper.length <= 10) return upper;
+    const mid = Math.floor(upper.length / 2);
+    let breakPos = upper.lastIndexOf(' ', mid);
+    if (breakPos === -1 || breakPos < 4) breakPos = upper.indexOf(' ', mid);
+    if (breakPos === -1) return upper;
+    return upper.slice(0, breakPos) + '\n' + upper.slice(breakPos + 1);
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     console.log(changes);  // Check what has changed
   }
@@ -168,8 +179,8 @@ export class SpinwheelPage implements OnInit {
     setTimeout(() => this.showCelebration = false, 4000);
     const toast = await this.toastController.create({
       message: `Congratulations! You won ₹${this.winningAmount}!`,
-      duration: 3000,
-      position: 'middle',
+      duration: 8000,
+      position: 'bottom',
       color: 'success'
     });
     toast.present();
@@ -179,7 +190,7 @@ export class SpinwheelPage implements OnInit {
         next: () => {
           if (amount >= 100) {
             this.showCelebration = true;
-            setTimeout(() => this.showCelebration = false, 4000);
+            setTimeout(() => this.showCelebration = false, 8000);
           }
           this.spinsRemaining--;
         },
@@ -195,30 +206,31 @@ export class SpinwheelPage implements OnInit {
     const toast = await this.toastController.create({
       message,
       duration: 3000,
-      position: 'middle',
+      position: 'top',
       color: 'danger'
     });
     toast.present();
   }
 
   getRandomPrize() {
-    const random = Math.random() * 100;
-    let sum = 0;
-
-    for (const item of this.items) {
-      sum += item.chance;
-      if (random <= sum) {
+    const eligible = this.items.filter(item => (item.chance || 0) > 0);
+    const total = eligible.reduce((acc, item) => acc + (item.chance || 0), 0);
+    const r = Math.random() * total;
+    let acc = 0;
+    for (const item of eligible) {
+      acc += item.chance || 0;
+      if (r < acc) {
         return item;
       }
     }
-    return this.items[0];
+    return eligible.length ? eligible[eligible.length - 1] : this.items[0];
   }
 
   async showNoSpinsMessage() {
     const toast = await this.toastController.create({
       message: 'No spins remaining.!',
       duration: 3000,
-      position: 'middle',
+      // position: 'bottom',
       color: 'warning'
     });
     toast.present();

@@ -12,7 +12,8 @@ export interface SpinWheelPrize {
   textColor: string;
   textFontSize: string;
   description: string;
-  mobileno: number
+  mobileno: number;
+  IsActive?: boolean;
 }
 
 export interface SpinWheelHistory {
@@ -38,15 +39,12 @@ export class SpinwheelService {
   }
 
   insertSprinHistory(userkey: number, prizeid: number, customermobileno: number) {
-
-    return this.http.post(`${this.apiUrl}/Pickup/InsertSpinWheelHistory`, {
-      userkey,
-      prizeid      
-    });
+    const url = `${this.apiUrl}/Pickup/InsertSpinWheelHistory?userkey=${userkey}&prizeid=${prizeid}`;
+    return this.http.get(url);
   }
 
   getRemainingSpins(userId: string): Observable<number> {
     let userkey = localStorage.getItem('UserKey');
     return this.http.get<number>(`${this.apiUrl}/Pickup/GetSpinCount?userkey=${userkey}`);
   }
-} 
+}
