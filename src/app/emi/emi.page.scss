@@ -166,7 +166,7 @@ body.dark .table {
   }
 
 .glass-card {
-  background: rgba(15, 17, 23, 0.6);
+  background: var(--app-panel);
   border: 1px solid rgba(123, 92, 255, 0.25);
   border-radius: 20px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 12px rgba(0, 212, 255, 0.15);
@@ -175,7 +175,7 @@ body.dark .table {
 }
 
 ion-item {
-  --background: rgba(255, 255, 255, 0.08);
+  --background: var(--app-panel-active);
   --color: var(--ion-text-color);
   border-radius: 12px;
   margin-bottom: 12px;
@@ -186,4 +186,21 @@ ion-button[type="submit"] {
   --color: #ffffff;
   border-radius: 999px;
   box-shadow: 0 0 12px rgba(123, 92, 255, 0.6);
+}
+
+
+
+table > thead > tr > th {
+    border: 1px solid #dededf;
+    background-color: #e60f0f;
+    color: #fcfcfc;
+    padding: 5px;
+    font-size: 13px;
+}
+
+table > tbody > tr > td {
+    border: 1px solid #dededf;  
+    padding: 4px;
+    text-align: right;
+    font-weight: 600;
 }

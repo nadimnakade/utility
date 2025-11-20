@@ -1,4 +1,4 @@
-<ion-header>  
+<ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/dashboard"></ion-back-button>
@@ -35,27 +35,27 @@
               <ion-button color="primary" type="submit" expand="block">Calculate</ion-button>
             </form>
             <div style="overflow-x:scroll; margin-top:16px;">
-              <table class="table table-striped table-bordered" id="tblEMI">
-      <thead>
-        <tr>
-          <th style="width:100px !important">No.</th>
-          <th>Opening Bal.</th>
-          <th>EMI</th>
-          <th>Principal</th>
-          <th>Interest</th>
-          <th>Bal.</th>
-        </tr>
-      </thead>
-      <tbody>        
-        <tr *ngFor="let obj of lstEMI">
-          <td>{{obj.SrNo}}</td>
-          <td>{{obj.LoanAmt}}</td>
-          <td>{{obj.EMI}}</td>
-          <td>{{obj.Principal}}</td>
-          <td>{{obj.ROI}}</td>
-          <td>{{obj.Balance}}</td>
-        </tr>
-      </tbody>
+              <table class="table table-striped table-bordered" id="tblEMI" style="width:100%">
+                <thead>
+                  <tr>
+                    <th style="width:10px !important">No.</th>
+                    <th>Opening Bal.</th>
+                    <th>EMI</th>
+                    <th>Principal</th>
+                    <th>Interest</th>
+                    <th>Bal.</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let obj of lstEMI">
+                    <td>{{obj.SrNo}}</td>
+                    <td>{{obj.LoanAmt | number:'1.0-0'}}</td>
+                    <td>{{obj.EMI | number:'1.0-0'}}</td>
+                    <td>{{obj.Principal | number:'1.0-0'}}</td>
+                    <td>{{obj.ROI | number:'1.0-0'}}</td>
+                    <td>{{obj.Balance | number:'1.0-0'}}</td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </ion-card-content>
@@ -69,7 +69,7 @@
     </ion-fab-button>
   </ion-fab>
 
-    <!-- <div style="text-align: center">
+  <!-- <div style="text-align: center">
       Share on Whatsapp <button ion-button icon-only (click)="whatsappShare()" color="primary" clear>
         <ion-icon class="share-icon" name="logo-whatsapp"></ion-icon>
     </button>

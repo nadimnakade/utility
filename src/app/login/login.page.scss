@@ -20,3 +20,26 @@ ion-button {
   border-radius: 999px;
   box-shadow: 0 0 12px rgba(123, 92, 255, 0.6);
 }
+
+.dark-dashboard {
+  color: #fff;
+}
+
+.dark-dashboard ion-card-title {
+  color: #fff;
+}
+
+.dark-dashboard ion-item {
+  --color: #fff;
+}
+
+.dark-dashboard ion-input {
+  --color: #fff;
+  --placeholder-color: rgba(255, 255, 255, 0.7);
+}
+
+.dark-dashboard .native-input,
+.dark-dashboard input,
+.dark-dashboard textarea {
+  color: #fff;
+}

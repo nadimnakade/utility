@@ -21,6 +21,8 @@ export class SpinwheelPage implements OnInit {
   winningAmount: string = '';
   spinsRemaining: number = 1;
   isLoading: boolean = true;
+  private audioCtx?: AudioContext;
+  private tickHandle?: any;
 
 
   constructor(
@@ -85,6 +87,8 @@ export class SpinwheelPage implements OnInit {
         textFontSize: prize.textFontSize || '9',
         textFontWeight: prize.textFontWeight || 'bold',
         chance: prize.chance || 0,
+        amount: prize.amount || 0,
+        customermobileno: prize.mobileno || null,
       }));
     })
     //  await this.spinwheelService.getPrizes().subscribe({
@@ -156,12 +160,15 @@ export class SpinwheelPage implements OnInit {
     this.wheel.spin();
   }
 
-  async before() { }
+  async before() { 
+    this.startTickSound();
+  }
 
   async after() {
+    this.stopTickSound();
     const winner = this.items.find(item => item.id === this.idToLandOn);
-    const amount = parseInt(winner.text.replace('₹', ''));
-    this.winningAmount = winner.text.replace('₹', '');
+    const amount = Number(winner?.amount || 0);
+    this.winningAmount = String(amount);
 
     // Record the spin
     const UserKey = Number(localStorage.getItem('UserKey'));
@@ -181,9 +188,8 @@ export class SpinwheelPage implements OnInit {
           if (amount >= 100) {
             this.showCelebration = true;
             setTimeout(() => this.showCelebration = false, 8000);
-
-            await this.loadWheelData();
           }
+          await this.loadWheelData();
           // this.spinsRemaining--;
         },
         error: (error) => {
@@ -226,6 +232,39 @@ export class SpinwheelPage implements OnInit {
       color: 'warning'
     });
     toast.present();
+  }
+
+  private startTickSound() {
+    try {
+      const Ctx = (window as any).AudioContext || (window as any).webkitAudioContext;
+      this.audioCtx = this.audioCtx || new Ctx();
+      this.tickHandle && clearInterval(this.tickHandle);
+      this.tickHandle = setInterval(() => this.playClick(900, 40), 120);
+    } catch {}
+  }
+
+  private stopTickSound() {
+    try {
+      this.tickHandle && clearInterval(this.tickHandle);
+      this.tickHandle = undefined;
+      this.playClick(600, 180);
+    } catch {}
+  }
+
+  private playClick(freq: number, durationMs: number) {
+    if (!this.audioCtx) return;
+    const ctx = this.audioCtx;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + durationMs / 1000);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + durationMs / 1000);
   }
 
   

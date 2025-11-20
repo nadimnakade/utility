@@ -1,7 +1,7 @@
 ion-header ion-toolbar {
-  --background: linear-gradient(135deg, #131318, #1f1f27);
-  --color: var(--ion-text-color);
-}
+  // --background: linear-gradient(135deg, #131318, #1f1f27);
+  --color: #DB2110;
+} 
 
 .dashboard-content {
   padding: 16px;
@@ -76,7 +76,7 @@ ion-header ion-toolbar {
 
 .avatar ion-icon {
   font-size: 30px;
-  color: #d4d68c;
+  color: #DB2110;
 }
 
 .greeting {
@@ -116,7 +116,7 @@ ion-header ion-toolbar {
 }
 
 .currency-tabs button.active {
-  color: #d4d68c;
+  color: #DB2110;
   background: rgba(255,255,255,0.06);
 }
 
@@ -128,19 +128,24 @@ ion-header ion-toolbar {
 }
 
 .action-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  height: 92px;
-  border-radius: 16px;
-  background: rgba(255,255,255,0.06);
+   display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 92px;
+    margin-top: 15px;
+    border-radius: 16px;
+    /* border: 1px solid rgba(255, 255, 255, 0.06); */
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 6px 16px rgb(35 14 14 / 35%);
 }
 
 .action-card ion-icon {
   font-size: 22px;
-  color: #d4d68c;
+  color: #DB2110;
 }
 
 .action-card .label {
@@ -156,11 +161,18 @@ ion-header ion-toolbar {
 
 .transaction-item {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: rgba(255,255,255,0.06);
-  border-radius: 16px;
-  padding: 12px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    height: 92px;
+    margin-top: 15px;
+    border-radius: 16px;
+    /* border: 1px solid rgba(255, 255, 255, 0.06); */
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 6px 16px rgb(35 14 14 / 35%);
 }
 
 .transaction-item .left {
@@ -208,7 +220,7 @@ ion-header ion-toolbar {
   align-items: center;
   gap: 22px;
   padding: 8px 14px;
-  background: #2a2e33;
+  background: #f2f3f5;
   border-radius: 18px;
   box-shadow: 0 6px 16px rgba(0,0,0,0.35);
 }
@@ -232,5 +244,5 @@ ion-header ion-toolbar {
 }
 
 .nav-item.active ion-icon {
-  color: #d4d68c;
+  color: #DB2110;
 }

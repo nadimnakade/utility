@@ -37,6 +37,7 @@ export class AppComponent {
     private androidPermissions: AndroidPermissions
   )
     {
+    localStorage.setItem('theme', 'light');
     this.sideMenu();
     this.initializeApp();
     this.checkPermissions();
@@ -137,7 +138,7 @@ export class AppComponent {
       }, 3000);
       
     });
-
+    
     if (localStorage.getItem("IsLoggedIn") == "true") {
       this.router.navigate(['/dashboard'])
     }
@@ -147,16 +148,15 @@ export class AppComponent {
   }
 
   applySavedTheme() {
-    const theme = localStorage.getItem('theme');
-    const enabled = theme === 'dark';
-    this.isDarkMode = enabled;
-    document.body.classList.toggle('dark', enabled);
+    this.isDarkMode = false;
+    document.body.classList.remove('dark');
+    localStorage.setItem('theme', 'light');
   }
 
   setDarkMode(enabled: boolean) {
-    this.isDarkMode = enabled;
-    document.body.classList.toggle('dark', enabled);
-    localStorage.setItem('theme', enabled ? 'dark' : 'light');
+    this.isDarkMode = false;
+    document.body.classList.remove('dark');
+    localStorage.setItem('theme', 'light');
   }
 
   sideMenu()

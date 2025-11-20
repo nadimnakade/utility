@@ -35,7 +35,7 @@
 body.dark {
   --app-panel: #2a2e33;
   --app-panel-active: #1f2327;
-  --app-accent: #d4d68c;
+  --app-accent: #DB2110;
 }
 
 body.dark ion-content {
@@ -81,8 +81,14 @@ body.dark .active {
 }
 
 
+body.dark .alert-title.sc-ion-alert-ios {
+  color: var(--ion-color-light) !important;
+  
+}
 
-
+body.dark .alert-message.sc-ion-alert-ios {
+  color: var(--ion-color-light) !important;
+}
 
 
 
@@ -110,13 +116,13 @@ body:not(.dark) #dataTable tbody tr {
 }
 
 body:not(.dark) #dataTable tbody td {
-  color: #fff  !important;
+  // color: #fff  !important;
 }
 
 body.dark 
 #dataTable thead th,
 #dataTable tbody td {
-  background: #0f0f12 !important;
+  // background: #0f0f12 !important;
 }
 
 #dataTable thead th,

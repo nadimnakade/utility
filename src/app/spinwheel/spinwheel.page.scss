@@ -31,9 +31,14 @@
     }
   }
 
-  ngx-wheel {
-    filter: drop-shadow(0 0 20px rgba(33, 150, 243, 0.2));
-  }
+ngx-wheel {
+  filter: drop-shadow(0 0 20px rgba(33, 150, 243, 0.2));
+}
+
+body.dark .wheel-container {
+  background: var(--app-panel);
+  border-radius: 16px;
+}
 
   .spin-button {
     margin-top: 20px;
