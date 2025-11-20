@@ -31,41 +31,31 @@ export class SpinwheelPage implements OnInit {
   ) { }
 
   async ngOnInit() {
-    //await this.loadWheelData();    
+    await this.loadWheelData();    
     // Assuming you have a service that gets the prizes from the backend
-    await this.spinwheelService.getPrizes().subscribe({
-      next: (prizes) => {
-        console.log('Backend prizes:', prizes);
+    // await this.spinwheelService.getPrizes().subscribe({
+    //   next: (prizes) => {
+    //     console.log('Backend prizes:', prizes);
 
-        // Map backend data to the format required by ngx-wheel
-        this.items = prizes.filter(p => p.IsActive === true).map(prize => ({
-          id: prize.id,
-          text: this.formatLabel(prize.description),
-          fillStyle: prize.fillStyle || '#FF6384',
-          textFillStyle: prize.textColor || '#ffffff',
-          textFontSize: prize.textFontSize || '9',
-          textFontWeight: prize.textFontWeight || 'bold',
-          chance: prize.chance || 0
-        }));
+    //     // Map backend data to the format required by ngx-wheel
+    //     this.items = prizes.map(prize => ({
+    //       id: prize.id,
+    //       text: this.formatLabel(prize.description),
+    //       fillStyle: prize.fillStyle || '#FF6384',
+    //       textFillStyle: prize.textColor || '#ffffff',
+    //       textFontSize: prize.textFontSize || '9',
+    //       textFontWeight: prize.textFontWeight || 'bold',
+    //       chance: prize.chance || 0
+    //     }));
 
-        console.log('Mapped wheel items:', this.items);
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error('Error fetching prizes:', error);
-        this.isLoading = false;
-      }
-    });
-    // this.items = [
-    //   { id: 1, text: 'Chocolate', fillStyle: '#FF6384', textColor: 'white', textFontSize: '16', textFontWeight: 'bold', chance: 26.4 },
-    //   { id: 2, text: '₹200', fillStyle: '#36A2EB', textColor: 'white', textFontSize: '16', textFontWeight: 'bold', chance: 40.0 },
-    //   { id: 3, text: '₹500', fillStyle: '#FFCE56', textColor: 'white', textFontSize: '16', textFontWeight: 'bold', chance: 30.0 },
-    //   { id: 4, text: '₹1000', fillStyle: '#4BC0C0', textColor: 'white', textFontSize: '16', textFontWeight: 'bold', chance: 3.0 },
-    //   { id: 5, text: '₹2000', fillStyle: '#9966FF', textColor: 'white', textFontSize: '16', textFontWeight: 'bold', chance: 0.5 },
-    //   { id: 6, text: '₹5000', fillStyle: '#FF9F40', textColor: 'white', textFontSize: '16', textFontWeight: 'bold', chance: 0.1 }
-    // ];
-
-
+    //     console.log('Mapped wheel items:', this.items);
+    //     this.isLoading = false;
+    //   },
+    //   error: (error) => {
+    //     console.error('Error fetching prizes:', error);
+    //     this.isLoading = false;
+    //   }
+    // });
   }
 
   private async loadWheelData() {
@@ -87,7 +77,7 @@ export class SpinwheelPage implements OnInit {
     }
     // Get prizes and probabilities from the backend
     await this.spinwheelService.getPrizes().subscribe(prizes => {
-      this.items = prizes.filter((p: any) => p.IsActive === true).map((prize: any) => ({
+      this.items = prizes.map((prize: any) => ({
         id: prize.id,
         text: this.formatLabel(prize.description),
         fillStyle: prize.fillStyle || '#FF6384',
@@ -187,12 +177,14 @@ export class SpinwheelPage implements OnInit {
     this.wheel.reset()
     if (UserKey) {
       this.spinwheelService.insertSprinHistory(UserKey, winner.id, winner.customermobileno).subscribe({
-        next: () => {
+        next: async () => {
           if (amount >= 100) {
             this.showCelebration = true;
             setTimeout(() => this.showCelebration = false, 8000);
+
+            await this.loadWheelData();
           }
-          this.spinsRemaining--;
+          // this.spinsRemaining--;
         },
         error: (error) => {
           console.error('Error recording spin:', error);

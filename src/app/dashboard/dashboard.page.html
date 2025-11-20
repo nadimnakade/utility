@@ -1,4 +1,4 @@
-<ion-header>
+<!-- <ion-header>
     <ion-toolbar>
       <ion-buttons slot="start">
         <ion-menu-button></ion-menu-button>
@@ -7,7 +7,7 @@
     </ion-toolbar>
   </ion-header>
 <ion-content class="ion-padding">
-    <!-- Header -->
+    
     <div class="header">
       <div class="welcome-text">
         <h1>Welcome Back</h1>
@@ -16,11 +16,7 @@
       <ion-searchbar placeholder="Search" class="custom-searchbar"></ion-searchbar>
     </div>
   
-    <!-- Room Grid -->
-    <!-- <div class="section-title">
-      <h2>Menu</h2>
-      <span>Services</span>
-    </div> -->
+   
   
     <div class="room-grid">
       <ion-card *ngFor="let room of rooms" class="room-card" (click)="navigateTo(room)">
@@ -36,7 +32,7 @@
       </ion-card>
     </div>
   
-    <!-- Bottom Navigation -->
+    
     <div class="bottom-nav">
       <ion-button fill="clear">
         <ion-icon name="home"></ion-icon>
@@ -54,4 +50,91 @@
         <ion-icon name="person"></ion-icon>
       </ion-button>
     </div>
-  </ion-content> 
+  </ion-content>  -->
+
+
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Home</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="dashboard-content">
+
+  <div class="profile-row ion-padding-top">
+    <div class="profile-left">
+      <div class="avatar">
+        <ion-icon name="person-circle"></ion-icon>
+      </div>
+      <div class="greeting">Hey, {{userName}}</div>
+    </div>
+  </div>
+
+  <div style="margin: top 24px;"></div>
+  <div class="promo-card ion-padding-top">
+    <button class="promo-close" (click)="dismissPromo()">
+      <ion-icon name="close"></ion-icon>
+    </button>
+
+    <div class="promo-icon">
+      <div class="bubble"><ion-icon name="trophy"></ion-icon></div>
+    </div>
+
+    <div class="promo-content">
+      <div class="promo-title">Spin & Win</div>
+      <div class="promo-sub">1 disbursal gives you chance to spin 1 wheel which have lot of exciting prizes</div>
+    </div>
+    <button class="promo-cta" (click)="ctaPromo()">SPIN NOW</button>
+  </div>
+
+
+
+
+  <div class="action-grid">
+    <div class="action-card" *ngFor="let room of rooms" (click)="navigateTo(room)">
+      <ion-icon [name]="room.icon"></ion-icon>
+      <div class="label">{{room.name}}</div>
+    </div>
+  </div>
+
+  <!-- <div class="transaction-list">
+    <div class="transaction-item" *ngFor="let t of transactions">
+      <div class="left">
+        <div class="icon-wrap">
+          <ion-icon name="logo-buffer"></ion-icon>
+        </div>
+        <div class="meta">
+          <div class="title">{{t.title}}</div>
+          <div class="sub">{{t.sub}}</div>
+        </div>
+      </div>
+      <div class="right">
+        <div class="amount">{{t.amount}}</div>
+        <div class="ticker">{{t.ticker}}</div>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="bottom-nav">
+    <div class="nav-pill">
+      <div class="nav-item active" (click)="navigateTo('dashboard')">
+        <ion-icon name="home"></ion-icon>
+      </div>
+      <div class="nav-item" (click)="navigateTo('business')">
+        <ion-icon name="business"></ion-icon>
+      </div>
+
+      <div class="nav-item" (click)="navigateTo('emi')">
+        <ion-icon name="calculator"></ion-icon>
+      </div>
+      <div class="nav-item" (click)="navigateTo('gift')">
+        <ion-icon name="gift"></ion-icon>
+      </div>
+      <div class="nav-item" (click)="navigateTo('trophy')">
+        <ion-icon name="trophy"></ion-icon>
+      </div>
+    </div>
+  </div>
+</ion-content>

@@ -33,7 +33,22 @@
 @import '~assets/styles/ngx-datatable/_icons.css';
 
 body.dark {
-  color: var(--ion-text-color);
+  --app-panel: #2a2e33;
+  --app-panel-active: #1f2327;
+  --app-accent: #d4d68c;
+}
+
+body.dark ion-content {
+  background: linear-gradient(180deg, #121417, #1a1a1f);
+}
+
+body.dark ion-toolbar {
+  --background: #131318;
+  --color: var(--ion-text-color);
+}
+
+body.dark ion-icon {
+  color: #b2b6a2;
 }
 
 body.dark ion-content {
