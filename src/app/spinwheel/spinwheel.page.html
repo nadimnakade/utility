@@ -20,7 +20,7 @@
       <div *ngFor="let i of [].constructor(50); let idx = index" class="confetti"></div>
       <div class="prize-popup">
         <div class="congrats">🎉 Congratulations! 🎉</div>
-        <div class="amount">₹{{winningAmount}}</div>
+        <div class="amount">{{winningAmount}}</div>
         <div>You've Won!</div>
       </div>
     </div> -->
@@ -36,9 +36,10 @@
     <div class="celebration" *ngIf="showCelebration">
       <div *ngFor="let i of [].constructor(50); let idx = index" class="confetti"></div>
       <div class="prize-popup">
-        <div class="congrats">🎉 Congratulations! 🎉</div>
-        <div class="amount">₹{{winningAmount}}</div>
-        <div>You've Won!</div>
+        <div class="congrats" *ngIf="!isSadPrize">🎉 Congratulations! 🎉 You've Won!</div>
+        <div class="congrats" *ngIf="isSadPrize">😔</div>
+        <div class="amount">{{winningAmount}}</div>
+        
       </div>
     </div>
 <!-- <div class="celebration" *ngIf="showCelebration">

@@ -22,26 +22,30 @@
   </form>
 </ion-content> -->
 <ion-content padding>
-  <form #form="ngForm" (ngSubmit)="login()" #registerForm="ngForm">
-    <ion-grid>
-      <ion-row color="primary" justify-content-center>
-        <ion-col align-self-center size-md="6" size-lg="5" size-xs="12">
-          <ion-card class="glass-card">
-            <ion-card-header>
-              <ion-card-title class="primary" text-center>Login</ion-card-title>
-            </ion-card-header>
-            <ion-card-content>
-              <ion-item class="ion-padding-top">
-                <ion-input name="email" type="text" [(ngModel)]="UserName" name="UserName" placeholder="Enter your UserName" ngModel required></ion-input>
-              </ion-item>
-              <ion-item class="ion-padding-top">
-                <ion-input name="password" type="password" [(ngModel)]="Password" placeholder="Enter your Password" ngModel required></ion-input>
-              </ion-item>
-              <ion-button size="large" type="submit" [disabled]="form.invalid" expand="block">Login</ion-button>
-            </ion-card-content>
-          </ion-card>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
+
+  <form #form="ngForm" style="margin-top: 25px;padding-top: 25px" (ngSubmit)="login()" #registerForm="ngForm">
+
+    <ion-card class="">
+      <div class="upper_div" style="margin  : 20px;">
+        <img src="assets/icon/logo.png" style="width: 180px;margin: 0 auto;">
+      </div>
+      <ion-card-header>
+        <ion-card-title class="secondary" text-center>1UP Utility</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-item class="ion-no-padding">
+          <ion-label position="floating" class="light_lbl">Username</ion-label>
+          <ion-input type="text" placeholder="UserName" [(ngModel)]="UserName" name="UserName" required></ion-input>
+        </ion-item>
+        <ion-item class="ion-no-padding">
+          <ion-label position="floating" class="light_lbl">Password</ion-label>
+          <ion-input type="Password" placeholder="Password" [(ngModel)]="Password" name="Password" required></ion-input>
+        </ion-item>
+        <ion-button expand="block" shape="round" (click)="login()" style="margin-top: 25px;margin-bottom:25px">
+          Login
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
   </form>
+  
 </ion-content>

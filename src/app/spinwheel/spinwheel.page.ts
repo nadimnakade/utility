@@ -21,6 +21,7 @@ export class SpinwheelPage implements OnInit {
   winningAmount: string = '';
   spinsRemaining: number = 1;
   isLoading: boolean = true;
+  isSadPrize = false;
   private audioCtx?: AudioContext;
   private tickHandle?: any;
 
@@ -166,16 +167,19 @@ export class SpinwheelPage implements OnInit {
 
   async after() {
     this.stopTickSound();
+    
     const winner = this.items.find(item => item.id === this.idToLandOn);
     const amount = Number(winner?.amount || 0);
-    this.winningAmount = String(amount);
+    const prize = winner?.text || 'No Prize';
+    this.winningAmount = prize;
+    this.isSadPrize = this.isSadText(prize);
 
     // Record the spin
     const UserKey = Number(localStorage.getItem('UserKey'));
     this.showCelebration = true;
     setTimeout(() => this.showCelebration = false, 4000);
     const toast = await this.toastController.create({
-      message: `Congratulations! You won ₹${this.winningAmount}!`,
+      message: `Congratulations! You won ${prize}! Contact Your TL for more details.`,
       duration: 8000,
       position: 'bottom',
       color: 'success'
@@ -198,6 +202,11 @@ export class SpinwheelPage implements OnInit {
         }
       });
     }
+  }
+
+  private isSadText(text: string): boolean {
+    const norm = (text || '').replace(/\s+/g, ' ').trim().toUpperCase();
+    return norm === 'IODEX MALYE KAAM PE CHALYE';
   }
 
   private async showError(message: string) {

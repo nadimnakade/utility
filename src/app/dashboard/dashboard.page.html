@@ -73,10 +73,10 @@
   </div>
 
   <div style="margin: top 24px;"></div>
-  <div class="promo-card ion-padding-top">
-    <button class="promo-close" (click)="dismissPromo()">
+  <div class="promo-card ion-padding-top" *ngIf="IsSpin">
+    <!-- <button class="promo-close" (click)="dismissPromo()">
       <ion-icon name="close"></ion-icon>
-    </button>
+    </button> -->
 
     <div class="promo-icon">
       <div class="bubble"><ion-icon name="trophy"></ion-icon></div>

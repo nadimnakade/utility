@@ -15,11 +15,17 @@ ion-item {
 }
 
 ion-button {
-  --background: linear-gradient(135deg, #5a45ff, #8a6eff);
+  // --background: linear-gradient(135deg, #5a45ff, #8a6eff);
   --color: #ffffff;
   border-radius: 999px;
-  box-shadow: 0 0 12px rgba(123, 92, 255, 0.6);
+  // box-shadow: 0 0 12px rgba(123, 92, 255, 0.6);
+  margin-top: 10px;
 }
+
+ion-input:focus {
+  --background: none !important;
+}
+
 
 .dark-dashboard {
   color: #fff;
@@ -42,4 +48,15 @@ ion-button {
 .dark-dashboard input,
 .dark-dashboard textarea {
   color: #fff;
+}
+
+
+.upper_div{
+  text-align: center;
+}
+
+.light_lbl{
+  font-size: 22px;
+  color: #000;
+  font-weight: bold;
 }

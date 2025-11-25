@@ -26,26 +26,39 @@ export class EmiPage implements OnInit {
   ngOnInit() {
   }
 
-  whatsappShare() {
+  async whatsappShare() {
 
 
-    const params = new HttpParams().set('LoanAmt', this.LoanAmt)
+     const params = new HttpParams()
+      .set('LoanAmt', this.LoanAmt)
       .set('Months', this.Months)
       .set('ROI', this.ROI);
 
-    const httpOptions = {
-      headers: new HttpHeaders(
-        { 'Content-Type': 'application/json' },
-      )
-    };
+    await this.httpC.get("https://1up.co.in/1up_api/api/UpdateStatus/EMI", {
+      params,
+      responseType: 'text'   // IMPORTANT
+    }).subscribe({
+      next: async (fileName: string) => {
+        const filepath = `https://1up.co.in/1up_api/Uploads/${fileName}`;
+        console.log('Share URL:', filepath);
 
-    this.httpC.get("https://1up.co.in/1up_api/api/UpdateStatus/EMI", { params: params }).subscribe(res => {
-      var filepath = "https://1up.co.in/1up_api/Uploads/" + res;
-      this.socialSharing.share("EMI", null, filepath).then(res => {
-        console.log("success : " + res);
-      }).catch(error => {
-        console.log("failed : " + error);
-      })
+        await this.socialSharing
+          .share(
+            "Your EMI calculation",  // message
+            "EMI",                   // subject
+            null,                    // file (for local files)
+            filepath                 // url (remote file/link)
+          )
+          .then(res => {
+            console.log("success : ", res);
+          })
+          .catch(error => {
+            console.log("failed : ", error);
+          });
+      },
+      error: (err) => {
+        console.error('EMI API error:', err);
+      }
     });
 
 

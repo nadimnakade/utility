@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SpinwheelService } from '../services/spinwheel.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -30,12 +31,32 @@ export class DashboardPage implements OnInit {
     { title: 'Tesla', sub: 'Sep 27, 6:21 PM', amount: '$ -10 000.00', ticker: '0.12 TSLA' }
   ];
   showPromoBanner = true;
+  IsSpin: boolean;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,private spinwheelService: SpinwheelService) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     const dismissed = localStorage.getItem('promoDismissed');
     this.showPromoBanner = dismissed !== 'true';
+    await this.loadWheelData();
+  }
+
+  private async loadWheelData() {
+    
+
+    const userId = localStorage.getItem('UserKey');
+    if (userId) {
+      this.spinwheelService.getRemainingSpins(userId).subscribe({
+        next: (spins) => {     
+          this.IsSpin = spins > 0 ? true : false;
+        },
+        error: (error) => {
+          this.IsSpin  = false;
+        }
+      });
+    }
+   
+   
   }
 
   navigateTo(room: any) {
