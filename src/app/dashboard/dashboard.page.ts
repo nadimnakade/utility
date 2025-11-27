@@ -16,7 +16,8 @@ export class DashboardPage implements OnInit {
     { name: 'Emi', icon: 'calculator', devices: 'EMI Calculator', path: 'emi' },
     { name: 'Company Category', icon: 'business', devices: 'Company List', path: 'companycategory' },
     { name: 'Offer', icon: 'gift', devices: 'Special Offers', path: 'offer' },
-    { name: 'Rewards', icon: 'trophy', devices: 'Spin & Win', path: 'spinwheel' }
+    { name: 'Rewards', icon: 'trophy', devices: 'Spin & Win', path: 'spinwheel' },
+    { name: 'PinCode Search', icon: 'search', devices: 'Bank Search', path: 'banksearch' }
   ];
 
   actions = [

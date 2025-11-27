@@ -187,6 +187,11 @@ export class AppComponent {
         title: "Rewards",
         url: "/spinwheel",
         icon: "trophy"
+      },
+      {
+        title : "PinCode Search",
+        url   : "/banksearch",
+        icon  : "search"
       }
     ]
   }

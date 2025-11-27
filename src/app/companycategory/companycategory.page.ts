@@ -39,7 +39,7 @@ export class CompanycategoryPage implements OnInit {
         "orderable": false
       }],
       "columns": [
-
+        
         { "data": "NAME", "name": "Name", "autoWidth": true },
         { "data": "CATEGORY", "name": "Category", "autoWidth": true },
         { "data": "BANK", "name": "Bank", "autoWidth": true },
