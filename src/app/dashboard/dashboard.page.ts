@@ -15,8 +15,9 @@ export class DashboardPage implements OnInit {
   rooms = [
     { name: 'Emi', icon: 'calculator', devices: 'EMI Calculator', path: 'emi' },
     { name: 'Company Category', icon: 'business', devices: 'Company List', path: 'companycategory' },
-    { name: 'Offer', icon: 'gift', devices: 'Special Offers', path: 'offer' },
-    { name: 'Rewards', icon: 'trophy', devices: 'Spin & Win', path: 'spinwheel' }
+    { name: 'Offer', icon: 'gift', devices: 'Special Offers', path: 'offer' },    
+    { name: 'Rewards', icon: 'trophy', devices: 'Spin & Win', path: 'spinwheel' },
+    { name: 'Pincode Search', icon: 'search', devices: 'Find Pincode', path: 'pincodesearch' }
   ];
 
   actions = [

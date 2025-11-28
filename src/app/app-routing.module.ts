@@ -18,6 +18,10 @@ const routes: Routes = [
     loadChildren: () => import('./offer/offer.module').then( m => m.OfferPageModule)
   },
   {
+    path: 'pincodesearch',
+    loadChildren: () => import('./pincodesearch/pincodesearch.module').then( m => m.PincodesearchPageModule)
+  },
+  {
     path: 'companycategory',
     loadChildren: () => import('./companycategory/companycategory.module').then( m => m.CompanycategoryPageModule)
   },
