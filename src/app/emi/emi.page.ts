@@ -2,6 +2,7 @@
 import { Component, OnInit, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 
 @Component({
   selector: 'app-emi',
@@ -20,48 +21,70 @@ export class EmiPage implements OnInit {
   constructor(
     public httpC: HttpClient,
     private elRef: ElementRef,
-    private socialSharing: SocialSharing
+    private socialSharing: SocialSharing,
+    private androidPermissions: AndroidPermissions
   ) { }
 
   ngOnInit() {
   }
 
   async whatsappShare() {
+    const loanAmount = Number(this.LoanAmt);
+    const numberOfMonths = Number(this.Months);
+    const rateOfInterest = Number(this.ROI);
+    if (!loanAmount || !numberOfMonths || !rateOfInterest) {
+      const message = 'Please enter LoanAmt, Months and ROI, then calculate.';
+      this.socialSharing.share(message);
+      return;
+    }
 
+    const monthlyInterestRatio = (rateOfInterest / 100) / 12;
+    const top = Math.pow((1 + monthlyInterestRatio), numberOfMonths);
+    const bottom = top - 1;
+    const sp = top / bottom;
+    const emi = ((loanAmount * monthlyInterestRatio) * sp);
 
-     const params = new HttpParams()
-      .set('LoanAmt', this.LoanAmt)
-      .set('Months', this.Months)
-      .set('ROI', this.ROI);
+    const msg = [
+      'EMI Details',
+      `Loan: ₹${this.formatInr(loanAmount)}`,
+      `Months: ${numberOfMonths}`,
+      `ROI: ${rateOfInterest}%`,
+      `EMI: ₹${this.formatInr(emi)}`
+    ].join('\n');
 
-    await this.httpC.get("https://1up.co.in/1up_api/api/UpdateStatus/EMI", {
-      params,
-      responseType: 'text'   // IMPORTANT
-    }).subscribe({
+    const params = new HttpParams()
+      .set('LoanAmt', String(this.LoanAmt))
+      .set('Months', String(this.Months))
+      .set('ROI', String(this.ROI));
+
+    this.httpC.get('https://1up.co.in/1up_api/api/UpdateStatus/EMI', { params, responseType: 'text' }).subscribe({
       next: async (fileName: string) => {
-        const filepath = `https://1up.co.in/1up_api/Uploads/${fileName}`;
-        console.log('Share URL:', filepath);
+        const fileUrl = `https://1up.co.in/1up_api/Uploads/${fileName}`;
+        const target = `file:///storage/emulated/0/Download/${fileName}`;
 
-        await this.socialSharing
-          .share(
-            "Your EMI calculation",  // message
-            "EMI",                   // subject
-            null,                    // file (for local files)
-            filepath                 // url (remote file/link)
-          )
-          .then(res => {
-            console.log("success : ", res);
-          })
-          .catch(error => {
-            console.log("failed : ", error);
-          });
+        // Share text with remote link (avoid native HTTP).
+        try {
+          await this.socialSharing.share(`${msg}\n${fileUrl}`);
+        } catch {
+          await this.socialSharing.share(msg);
+        }
       },
-      error: (err) => {
-        console.error('EMI API error:', err);
+      error: () => {
+        this.socialSharing.share(msg);
       }
     });
+  }
 
+  private formatInr(value: number): string {
+    return new Intl.NumberFormat('en-IN').format(Math.round(value));
+  }
 
+  private deleteFile(path: string) {
+    try {
+      (window as any).resolveLocalFileSystemURL(path, (entry: any) => {
+        try { entry.remove(() => {}, () => {}); } catch {}
+      }, () => {});
+    } catch {}
   }
 
   // getSelectOptionValue():any {

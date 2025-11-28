@@ -13,7 +13,6 @@ import { registerLocaleData } from '@angular/common';
 import localeEnIn from '@angular/common/locales/en-IN';
 import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { AppUpdate } from '@ionic-native/app-update/ngx';
-import { HTTP } from '@ionic-native/http/ngx';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 import { DataTablesModule } from 'angular-datatables';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -43,7 +42,6 @@ registerLocaleData(localeEnIn);
     AppUpdate,
     Device,
     AppVersion,
-    HTTP,
     //CallLog,
     AndroidPermissions,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

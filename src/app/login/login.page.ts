@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 import { Device } from '@ionic-native/device/ngx';
 import { NavController, AlertController, LoadingController, Platform } from '@ionic/angular';
-import { HTTP } from '@ionic-native/http/ngx';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { AppVersion } from '@ionic-native/app-version/ngx';
 
@@ -28,8 +28,9 @@ interface EmployeeDetails {
 })
 export class LoginPage implements OnInit {
   // API URLs
-  private readonly apiUrl = 'https://1up.co.in/1up_api/api/UpdateStatus/ValidateLogin';
-  private readonly apiUrlFallback = 'https://1up.co.in/1up_api/api/UpdateStatus/ValidateLogin';
+  private readonly apiUrl = `${environment.apiUrl}/UpdateStatus/ValidateLogin`;
+  private readonly apiUrlFallback = `${environment.apiUrl}/UpdateStatus/ValidateLogin`;
+  private readonly apiUrlDialer = `https://1up.co.in/DialerAPI/api/UpdateStatus/ValidateLogin`;
 
   // Component fields
   mobileno: string = '';
@@ -48,7 +49,7 @@ export class LoginPage implements OnInit {
     private alertController: AlertController,
     private loadingController: LoadingController,
     private platform: Platform,
-    private nativeHttp: HTTP
+    // remove native HTTP and use HttpClient everywhere
   ) {
     this.appversionInfo.getVersionNumber().then(version => {
       this.versionInfo = version;
@@ -82,81 +83,88 @@ export class LoginPage implements OnInit {
     };
 
     console.log('Login payload:', payload);
+    console.log('API URL:', this.apiUrl);
 
-    const isNative =
-      this.platform.is('cordova') ||
-      this.platform.is('capacitor') ||
-      this.platform.is('hybrid');
+    // Build form-urlencoded body (like Postman x-www-form-urlencoded)
+    const body = new HttpParams()
+      .set('UserName', payload.UserName)
+      .set('Password', payload.Password)
+      .set('UUID', String(payload.UUID))
+      .set('Type', payload.Type || 'testing')
+      .toString();
 
-    // -----------------------------
-    // 1) BROWSER → HttpClient GET with query string
-    // -----------------------------
-    if (!isNative) {
-      const params = new HttpParams()
-        .set('UserName', payload.UserName)
-        .set('Password', payload.Password)
-        .set('UUID', String(payload.UUID))
-        .set('Type', payload.Type || '');
+    this.httpC.post<EmployeeDetails[]>(this.apiUrl, body, {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json',
+      }),
+    })
+      .subscribe({
+        next: (res: EmployeeDetails[]) => {
+          loader.dismiss();
+          const employeeDtl = res?.[0];
+          if (employeeDtl && employeeDtl.Key > 0) {
+            this.handleSuccessfulLogin(employeeDtl);
+          } else {
+            this.handleLoginError('Invalid credentials or no employee data returned.');
+          }
+        },
+        error: (err) => {
+          const status = err?.status;
+          if (status === 404) {
+            const params = new HttpParams()
+              .set('UserName', payload.UserName)
+              .set('Password', payload.Password)
+              .set('UUID', String(payload.UUID))
+              .set('Type', payload.Type || 'testing');
 
-      const url = `${this.apiUrl}?${params.toString()}`;
-
-      this.httpC.get<EmployeeDetails[]>(url)
-        .subscribe({
-          next: (res: EmployeeDetails[]) => {
+            this.httpC.get<EmployeeDetails[]>(this.apiUrl, { params, headers: new HttpHeaders({ 'Accept': 'application/json' }) })
+              .subscribe({
+                next: (res2: EmployeeDetails[]) => {
+                  loader.dismiss();
+                  const employeeDtl = res2?.[0];
+                  if (employeeDtl && employeeDtl.Key > 0) {
+                    this.handleSuccessfulLogin(employeeDtl);
+                  } else {
+                    this.handleLoginError('Invalid credentials or no employee data returned.');
+                  }
+                },
+                error: (err2) => {
+                  const status2 = err2?.status;
+                  if (status2 === 404) {
+                    this.httpC.get<EmployeeDetails[]>(this.apiUrlDialer, { params, headers: new HttpHeaders({ 'Accept': 'application/json' }) })
+                      .subscribe({
+                        next: (res3: EmployeeDetails[]) => {
+                          loader.dismiss();
+                          const employeeDtl = res3?.[0];
+                          if (employeeDtl && employeeDtl.Key > 0) {
+                            this.handleSuccessfulLogin(employeeDtl);
+                          } else {
+                            this.handleLoginError('Invalid credentials or no employee data returned.');
+                          }
+                        },
+                        error: (err3) => {
+                          loader.dismiss();
+                          const msg3 = this.buildErrorMessage(err3);
+                          this.handleLoginError(msg3 || 'Request failed');
+                        }
+                      });
+                  } else {
+                    loader.dismiss();
+                    const msg2 = this.buildErrorMessage(err2);
+                    this.handleLoginError(msg2 || 'Request failed');
+                  }
+                }
+              });
+          } else {
             loader.dismiss();
-            const employeeDtl = res?.[0];
-            if (employeeDtl && employeeDtl.Key > 0) {
-              this.handleSuccessfulLogin(employeeDtl);
-            } else {
-              this.handleLoginError('Invalid credentials or no employee data returned.');
-            }
-          },
-          error: (err) => {
-            loader.dismiss();
-            console.error('HttpClient error:', err);
             const msg = this.buildErrorMessage(err);
             this.handleLoginError(msg || 'Request failed');
           }
-        });
-
-      return;
-    }
-
-    // -----------------------------
-    // 2) DEVICE / APK → Native HTTP GET with params
-    // -----------------------------
-    try {
-      const nativeParams = {
-        UserName: payload.UserName,
-        Password: payload.Password,
-        UUID: String(payload.UUID),
-        Type: payload.Type || '',
-      };
-
-      const nativeResponse = await this.nativeHttp.get(
-        this.apiUrl,
-        nativeParams, // will be converted to ?UserName=...&Password=...
-        {}            // headers if needed
-      );
-
-      console.log('Native HTTP response:', nativeResponse);
-
-      const res: EmployeeDetails[] = JSON.parse(nativeResponse.data);
-      loader.dismiss();
-
-      const employeeDtl = res?.[0];
-      if (employeeDtl && employeeDtl.Key > 0) {
-        this.handleSuccessfulLogin(employeeDtl);
-      } else {
-        this.handleLoginError('Invalid credentials or no employee data returned.');
-      }
-    } catch (err) {
-      loader.dismiss();
-      console.error('Native HTTP error:', err);
-      const msg = this.buildNativeErrorMessage(err);
-      this.handleLoginError(msg || 'Request failed (native HTTP)');
-    }
+        }
+      });
   }
+
 
 
 
